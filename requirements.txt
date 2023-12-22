@@ -1,0 +1,3 @@
+dash==2.14.2
+pandas
+plotly==5.18.0
