@@ -22,8 +22,7 @@ app.layout = html.Div([
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
-    if pathname == '/eda':
-        
+    if pathname == '/':
         return edaLayout
     else:
         return '404 - Page not found'  # You can have a default page or a 404 page

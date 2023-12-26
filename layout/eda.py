@@ -8,7 +8,7 @@ import sqlite3
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from .template import my_ibcs_template
+from .template import my_ibcs_template, titles_styles
 
 
 path = os.path.join('data', 'cleaned_data.sqlite')
@@ -58,9 +58,10 @@ def load_and_aggregate_data():
     monthly_data['total_actual_generation'] = monthly_data['DE_solar_generation_actual'] + monthly_data['DE_wind_generation_actual']
     
     # create feature for difference between actual and forecasted load
-    monthly_data['load_diff'] = monthly_data['DE_load_actual_entsoe_transparency'] - monthly_data['DE_load_forecast_entsoe_transparency']
+    monthly_data['load_diff'] =  monthly_data['DE_load_forecast_entsoe_transparency'] - monthly_data['DE_load_actual_entsoe_transparency']
     
-    # create feature to see if renewable generation is meeting load
+    # remove all rows before february 2015
+    monthly_data = monthly_data[monthly_data['date'] >= '2015-02-01']
     
     
     return monthly_data
@@ -89,16 +90,29 @@ trace2 = go.Scatter(
     
 )
 
+
 # Create layout
 layout = go.Layout(
-    title='ΔActual/Forecasted Load',
-    template=my_ibcs_template
+    title='ΔForecasted - Actual Load (MWh)',
+    template=my_ibcs_template,
+    yaxis=dict(
+        tickformat=',.0f',
+        tickmode='array',
+    ),
 )
 
-# Create figure and add traces
+# Create figure and add tracces with y-axis ticks coming every 20% of the range
 fig = go.Figure(data=[trace1, trace2], layout=layout)
 
+
+
+
+
+
+
 edaLayout = html.Div(children=[
-    html.H1(children='Energy Data Dashboard'),
+    html.H3(children='Florian Rauls', style=titles_styles),
+    html.H3(children='Exploratory Data Analysis', style=titles_styles),
+    html.H3(children='2015-2020', style=titles_styles),
     dcc.Graph(figure=fig)
 ])
