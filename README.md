@@ -1,6 +1,6 @@
-# European Energy Generation Capacity Dashboard
+# IBCS-conform German Energy Generation Dashboard
 ## Overview
-This repository contains a Dash application designed to showcase a variety of Data Science skills, including data transformation, exploratory data analysis, predictive modeling, and advanced data visualization techniques. The application utilizes the "National Generation Capacity" dataset, which provides detailed information on the energy generation capacities of European countries, categorized by various energy sources and technologies.
+This repository is a work in progress to create an International Business Communications Conform (https://www.ibcs.com/de/) conform dashboard giving an overview of German Energy Generation.
 
 ## Features
 N/A
