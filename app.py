@@ -11,7 +11,7 @@ from layout.template import titles_styles
 app = Dash(__name__)
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = Dash(__name__, external_stylesheets=external_stylesheets)
-
+server = app.server
 
 # Define the app layout
 app.layout = html.Div([
@@ -28,7 +28,7 @@ def display_page(pathname):
                 html.H3(children='Florian Rauls', style=titles_styles),
                 html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
                 html.H3(children='2015-2020', style=titles_styles),
-            edaLayout
+                edaLayout
         ])
     else:
         return '404 - Page not found'  # You can have a default page or a 404 page

@@ -62,16 +62,11 @@ def load_and_aggregate_data():
     
     # remove all rows before february 2015
     monthly_data = monthly_data[monthly_data['date'] >= '2015-01-01']
-    
-    
     return monthly_data
 
 
 # Load and aggregate data
 monthly_data = load_and_aggregate_data()
-
-# TODO: Put value over points of interest (start, end, min, max) in 10MMWh
-
 
 # Create bar chart trace
 trace1 = go.Bar(
@@ -80,10 +75,9 @@ trace1 = go.Bar(
     name='Load Difference'
 )
 
-
 # Create layout
 layout = go.Layout(
-    title='Δ(AC-FC) Load',
+    title='Δ(AC-FC) Power Grid Load',
     template=my_ibcs_template,
     yaxis=dict(
         tickformat=',.0f',
