@@ -45,7 +45,7 @@ df_de.drop(['utc_timestamp', 'cet_cest_timestamp'], axis=1, inplace=True)
 
 # save a sample of the cleaned data as a csv file
 sample_csv_file_path = os.path.join('data', 'sample_output.csv')
-df_de.sample(1000).to_csv(sample_csv_file_path, index=False)
+df_de.sample(50).to_csv(sample_csv_file_path, index=False)
 
 # save the cleaned data to a sqlite database
 cleaned_db_file_path = os.path.join('data', 'cleaned_data.sqlite')
