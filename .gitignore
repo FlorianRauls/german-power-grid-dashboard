@@ -2,3 +2,4 @@
 data/time_series.sqlite
 data/cleaned_national_generation_capacity.csv
 *.pyc
+data/sample_output.csv
