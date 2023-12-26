@@ -3,14 +3,14 @@ import plotly.graph_objects as go
 
 # just a template to use for all the other layouts in the project
 my_ibcs_template = dict(
-    layout = go.Layout(title_font=dict(size=24, color='#000000', family='Roboto'),
+    layout = go.Layout(title_font=dict(size=20, color='#000000', family='Roboto'),
                           font=dict(size=14, color='#000000', family='Roboto'),
                           plot_bgcolor='#FFFFFF',
                           paper_bgcolor='#FFFFFF',
                           xaxis=dict(showgrid=True, showticklabels=True),
-                          yaxis=dict(showgrid=False, zeroline=True, showticklabels=True, zerolinecolor='#000000', showline=True),
+                          yaxis=dict(showgrid=False, zeroline=True, showticklabels=False, zerolinecolor='#000000'),
                           scene=dict(xaxis=dict(showgrid=False, zeroline=True, showticklabels=True)),
-                          colorway= ['#999999', '#777777', '#555555', '#333333', '#111111'],
+                          colorway= ['#333333', '#555555', '#999999', '#777777'],
                           margin=dict(l=100, r=100, t=100, b=100),
                           hovermode='closest',
                           showlegend=False,

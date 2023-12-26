@@ -58,10 +58,10 @@ def load_and_aggregate_data():
     monthly_data['total_actual_generation'] = monthly_data['DE_solar_generation_actual'] + monthly_data['DE_wind_generation_actual']
     
     # create feature for difference between actual and forecasted load
-    monthly_data['load_diff'] =  monthly_data['DE_load_forecast_entsoe_transparency'] - monthly_data['DE_load_actual_entsoe_transparency']
+    monthly_data['load_diff'] =  monthly_data['DE_load_actual_entsoe_transparency'] - monthly_data['DE_load_forecast_entsoe_transparency']
     
     # remove all rows before february 2015
-    monthly_data = monthly_data[monthly_data['date'] >= '2015-02-01']
+    monthly_data = monthly_data[monthly_data['date'] >= '2015-01-01']
     
     
     return monthly_data
@@ -69,6 +69,8 @@ def load_and_aggregate_data():
 
 # Load and aggregate data
 monthly_data = load_and_aggregate_data()
+
+# TODO: Put value over points of interest (start, end, min, max) in 10MMWh
 
 
 # Create bar chart trace
@@ -79,21 +81,11 @@ trace1 = go.Bar(
 )
 
 
-# Fit a line to the data and create line plot trace
-z = np.polyfit(range(len(monthly_data)), monthly_data['load_diff'], 1)
-p = np.poly1d(z)
-trace2 = go.Scatter(
-    x=monthly_data['date'],
-    y=p(range(len(monthly_data))),
-    mode='lines',
-    name='Trendline'
-    
-)
 
 
 # Create layout
 layout = go.Layout(
-    title='ΔForecasted - Actual Load (MWh)',
+    title='Δ(AC-FC) Load in MWh',
     template=my_ibcs_template,
     yaxis=dict(
         tickformat=',.0f',
@@ -102,17 +94,17 @@ layout = go.Layout(
 )
 
 # Create figure and add tracces with y-axis ticks coming every 20% of the range
-fig = go.Figure(data=[trace1, trace2], layout=layout)
+fig = go.Figure(data=[trace1], layout=layout)
 
 
 
 
 
-
+# TODO Change title to include dataset
 
 edaLayout = html.Div(children=[
     html.H3(children='Florian Rauls', style=titles_styles),
-    html.H3(children='Exploratory Data Analysis', style=titles_styles),
+    html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
     html.H3(children='2015-2020', style=titles_styles),
     dcc.Graph(figure=fig)
 ])
