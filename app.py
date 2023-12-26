@@ -5,6 +5,7 @@ import pandas as pd
 import os
 from dash.dependencies import Input, Output
 from layout.eda import edaLayout
+from layout.template import titles_styles
 
 # Initialize the Dash app
 app = Dash(__name__)
@@ -23,7 +24,12 @@ app.layout = html.Div([
               [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/':
-        return edaLayout
+        return html.Div([
+                html.H3(children='Florian Rauls', style=titles_styles),
+                html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
+                html.H3(children='2015-2020', style=titles_styles),
+            edaLayout
+        ])
     else:
         return '404 - Page not found'  # You can have a default page or a 404 page
 

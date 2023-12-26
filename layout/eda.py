@@ -81,11 +81,9 @@ trace1 = go.Bar(
 )
 
 
-
-
 # Create layout
 layout = go.Layout(
-    title='Δ(AC-FC) Load in MWh',
+    title='Δ(AC-FC) Load',
     template=my_ibcs_template,
     yaxis=dict(
         tickformat=',.0f',
@@ -96,15 +94,35 @@ layout = go.Layout(
 # Create figure and add tracces with y-axis ticks coming every 20% of the range
 fig = go.Figure(data=[trace1], layout=layout)
 
+# find points of interest in the data: start, end, min, max
+start = monthly_data['load_diff'].iloc[0] 
+end = monthly_data['load_diff'].iloc[-1] 
+minD = monthly_data['load_diff'].min() 
+maxD = monthly_data['load_diff'].max() 
+
+# add annotations to the figure at the points of interest
+distance = 1000000
+fig.add_annotation(x=monthly_data['date'].iloc[0], y=start + distance,
+            text="{:.0f}".format(start/1000)+'GWh',
+            showarrow=False)
+fig.add_annotation(x=monthly_data['date'].iloc[-1], y=end + distance,
+            text="{:.0f}".format(end/1000)+'GWh',
+            showarrow=False)
+
+fig.add_annotation(x=monthly_data['date'].iloc[monthly_data['load_diff'].idxmin()], y=minD - distance,
+            text="{:.0f}".format(minD/1000)+'GWh',
+            showarrow=False)
+
+fig.add_annotation(x=monthly_data['date'].iloc[monthly_data['load_diff'].idxmax()], y=maxD + distance,
+            text="{:.0f}".format(maxD/1000)+'GWh',
+            showarrow=False)
 
 
-
-
-# TODO Change title to include dataset
 
 edaLayout = html.Div(children=[
-    html.H3(children='Florian Rauls', style=titles_styles),
-    html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
-    html.H3(children='2015-2020', style=titles_styles),
-    dcc.Graph(figure=fig)
-])
+                        html.Div(children=[
+                            dcc.Graph(id='load-diff', figure=fig)
+                            ], style={'align' : 'left', 'width': '50%'}),
+                            ]
+    )
+
