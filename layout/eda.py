@@ -237,30 +237,36 @@ def renewable_share_by_operator():
     # define energy_types
     energy_types = ['solar_share', 'wind_share']
     
-    # Create subplots for each year
-    fig = make_subplots(rows=len(solar_data["year"].unique()), cols=1, subplot_titles=[str(year) for year in solar_data['year'].unique()])
-
-    # For each year, add a bar chart with operators on y-axis and share on x-axis
-    for i, year in enumerate(solar_data['year'].unique()):
+    # Create subplots for operators
+    fig = make_subplots(
+        rows=len(solar_data.index.unique()),
+        cols=1,
+        subplot_titles=solar_data.index.unique()
+    )
+    
+    # For each operator, add a bar chart with years on y-axis and share on x-axis
+    for i, operator in enumerate(solar_data.index.unique()):
         # Add solar data
         fig.add_trace(go.Bar(
-            x=solar_data[solar_data['year'] == year]['share_in_operator_production'], 
-            y=solar_data[solar_data['year'] == year].index, 
+            x=solar_data.loc[operator]['share_in_operator_production'], 
+            y=solar_data.loc[operator]['year'], 
             orientation='h', 
-            name=f'Solar {year}', 
+            name=f'Solar {operator}', 
             marker_color='black',
             showlegend=False
         ), row=i+1, col=1)
         
         # Add wind data
         fig.add_trace(go.Bar(
-            x=wind_data[wind_data['year'] == year]['share_in_operator_production'], 
-            y=wind_data[wind_data['year'] == year].index, 
+            x=wind_data.loc[operator]['share_in_operator_production'], 
+            y=wind_data.loc[operator]['year'], 
             orientation='h', 
-            name=f'Wind {year}', 
+            name=f'Wind {operator}', 
             marker_color='grey',
             showlegend=False
         ), row=i+1, col=1)
+
+
 
     # Define the layout
     fig.update_layout(
@@ -268,10 +274,12 @@ def renewable_share_by_operator():
         title = 'Renewable Share by Operator',
         barmode='stack',  # Bars for the same y value will be stacked
         yaxis=dict(
-            tickformat=',.0%',
-            tickmode='array',
+            showticklabels=False
         ),
         xaxis=dict(
+            tickformat=',.0%',
+            tickmode='array',
+            tickvals=[0, .2, .4, .6],
         )
     )
     
