@@ -18,7 +18,25 @@ def load_and_aggregate_data():
     # Query to fetch data from the database
     query = """
     SELECT 
-        *
+        DE_load_actual_entsoe_transparency, 
+        DE_load_forecast_entsoe_transparency, 
+        DE_solar_generation_actual, 
+        DE_wind_generation_actual, 
+        year,
+        month,
+        day,
+        DE_tennet_solar_generation_actual, 
+        DE_tennet_wind_onshore_generation_actual, 
+        DE_amprion_solar_generation_actual, 
+        DE_amprion_wind_onshore_generation_actual, 
+        DE_transnetbw_solar_generation_actual, 
+        DE_transnetbw_wind_onshore_generation_actual, 
+        DE_50hertz_solar_generation_actual, 
+        DE_50hertz_wind_generation_actual, 
+        DE_tennet_load_actual_entsoe_transparency, 
+        DE_amprion_load_actual_entsoe_transparency, 
+        DE_transnetbw_load_actual_entsoe_transparency, 
+        DE_50hertz_load_actual_entsoe_transparency
     FROM 
         cleaned_data;
     """
@@ -34,6 +52,8 @@ def load_and_aggregate_data():
     # Resample and aggregate by month
     numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
     monthly_data = df[numeric_columns].resample('M').sum()
+    
+    del df
 
     # Reset index and extract month and year from date
     monthly_data.reset_index(inplace=True)
@@ -168,7 +188,7 @@ def renewable_share_by_operator():
     )
     
     # calculate the share of solar and wind for each operator (Here: 50Hertz, Amprion, TenneT, TransnetBW) aggregated in sum over 2015-2020
-    renewable_share = monthly_data.drop(columns=['date', 'hour', 'lag_1_hour'])
+    renewable_share = monthly_data.drop(columns=['date'])
     renewable_share = renewable_share.groupby(['year']).sum()[['DE_tennet_solar_generation_actual', 'DE_tennet_wind_onshore_generation_actual', 'DE_amprion_solar_generation_actual', 'DE_amprion_wind_onshore_generation_actual', 'DE_transnetbw_solar_generation_actual', 'DE_transnetbw_wind_onshore_generation_actual', 'DE_50hertz_solar_generation_actual', 'DE_50hertz_wind_generation_actual', 'DE_tennet_load_actual_entsoe_transparency', 'DE_amprion_load_actual_entsoe_transparency', 'DE_transnetbw_load_actual_entsoe_transparency', 'DE_50hertz_load_actual_entsoe_transparency']]
     
     # calculate the share of solar and wind given the total actual generation for each operator
