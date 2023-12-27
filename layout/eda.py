@@ -122,7 +122,7 @@ def gridLoadChart():
                 text="{:.0f}".format(maxD/1000)+'GWh',
                 showarrow=False)
     
-    fig.update_yaxes(range=[-12500000, 12500000])
+    fig.update_yaxes(range=[-15500000, 25500000])
     
     return fig
 
@@ -151,7 +151,7 @@ def renewableIncrease():
     # change the figure style to color positive and negative values differently
     fig.update_traces(marker_color=['green' if x > 0 else 'red' for x in monthly_data['renewable_increase']])
     
-    fig.update_yaxes(range=[-12500000, 12500000])
+    fig.update_yaxes(range=[-15500000, 25500000])
     
     # add annotations to the figure at the points of interest
     distance = 1500000
@@ -227,9 +227,7 @@ def renewable_share_by_operator():
     combined = combined.apply(lambda x: x.stack().reset_index())
     combined.columns = ['year', 'energy', 'share_in_operator_production']
     combined = combined.droplevel(1)
-    
-    print(combined.head())
-    
+
     # Separate the data for solar and wind
     solar_data = combined[combined['energy'] == 'solar_share']
     wind_data = combined[combined['energy'] == 'wind_share']
@@ -237,34 +235,31 @@ def renewable_share_by_operator():
     # define energy_types
     energy_types = ['solar_share', 'wind_share']
     
-    # Create subplots for operators
     fig = make_subplots(
-        rows=len(solar_data.index.unique()),
-        cols=1,
-        subplot_titles=solar_data.index.unique()
+        rows=1,
+        cols=len(solar_data.index.unique()),
+        subplot_titles=[str(operator) for operator in solar_data.index.unique()]
     )
-    
-    # For each operator, add a bar chart with years on y-axis and share on x-axis
+
+    # For each operator, add a bar chart with years on x-axis and share on y-axis
     for i, operator in enumerate(solar_data.index.unique()):
         # Add solar data
         fig.add_trace(go.Bar(
-            x=solar_data.loc[operator]['share_in_operator_production'], 
-            y=solar_data.loc[operator]['year'], 
-            orientation='h', 
+            x=solar_data.loc[operator]['year'], 
+            y=solar_data.loc[operator]['share_in_operator_production'], 
             name=f'Solar {operator}', 
             marker_color='black',
             showlegend=False
-        ), row=i+1, col=1)
+        ), row=1, col=i+1)
         
         # Add wind data
         fig.add_trace(go.Bar(
-            x=wind_data.loc[operator]['share_in_operator_production'], 
-            y=wind_data.loc[operator]['year'], 
-            orientation='h', 
+            x=wind_data.loc[operator]['year'], 
+            y=wind_data.loc[operator]['share_in_operator_production'], 
             name=f'Wind {operator}', 
             marker_color='grey',
             showlegend=False
-        ), row=i+1, col=1)
+        ), row=1, col=i+1)
 
 
 
@@ -274,16 +269,15 @@ def renewable_share_by_operator():
         title = 'Renewable Share by Operator',
         barmode='stack',  # Bars for the same y value will be stacked
         yaxis=dict(
-            showticklabels=False
-        ),
-        xaxis=dict(
             tickformat=',.0%',
             tickmode='array',
-            tickvals=[0, .2, .4, .6],
+            showticklabels=True
+        ),
+        xaxis=dict(
         )
     )
     
-    fig.update_xaxes(range=[0, .6])
+    fig.update_yaxes(range=[0, .6])
 
 
     return fig
