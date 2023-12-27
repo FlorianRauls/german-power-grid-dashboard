@@ -117,6 +117,12 @@ def gridLoadChart():
     fig.add_annotation(x=monthly_data['date'].iloc[monthly_data['load_diff'].idxmin()], y=minD - distance,
                 text="{:.0f}".format(minD/1000)+'GWh',
                 showarrow=False)
+    
+    # add additional annotation for the minimum value
+    fig.add_annotation(x=monthly_data['date'].iloc[monthly_data['load_diff'].idxmin()], y=minD +(7*distance),
+                text="COVID-19 Demand Decrease",
+                showarrow=True,
+                xshift=-10)
 
     fig.add_annotation(x=monthly_data['date'].iloc[monthly_data['load_diff'].idxmax()], y=maxD + distance,
                 text="{:.0f}".format(maxD/1000)+'GWh',
