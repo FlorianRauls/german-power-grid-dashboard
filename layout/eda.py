@@ -161,7 +161,7 @@ def renewableIncrease():
     fig.add_annotation(x=monthly_data['date'].iloc[-1], y=monthly_data['renewable_increase'].iloc[-1] - distance,
                 text="{:.0f}".format(monthly_data['renewable_increase'].iloc[-1]/1000)+'GWh',
                 showarrow=False)
-    fig.add_annotation(x=monthly_data['date'].iloc[monthly_data['renewable_increase'].idxmin()], y=monthly_data['renewable_increase'].iloc[monthly_data['renewable_increase'].idxmin()] - (4.5*distance),
+    fig.add_annotation(x=monthly_data['date'].iloc[monthly_data['renewable_increase'].idxmin()], y=monthly_data['renewable_increase'].iloc[monthly_data['renewable_increase'].idxmin()] - (5*distance),
                 text="{:.0f}".format(monthly_data['renewable_increase'].iloc[monthly_data['renewable_increase'].idxmin()]/1000)+'GWh',
                 showarrow=False)
     fig.add_annotation(x=monthly_data['date'].iloc[monthly_data['renewable_increase'].idxmax()], y=monthly_data['renewable_increase'].iloc[monthly_data['renewable_increase'].idxmax()] - distance,
@@ -278,6 +278,16 @@ def renewable_share_by_operator():
     )
     
     fig.update_yaxes(range=[0, .6])
+    
+    # add annotiation to give information about black being solar and grey being wind
+    fig.add_annotation(x=2015, y=0.14,
+                text="Solar",
+                showarrow=False,
+                textangle=270)
+    fig.add_annotation(x=2015, y=0.485,
+                text="Wind",
+                showarrow=False,
+                textangle=270)
 
 
     return fig
@@ -293,7 +303,7 @@ gridLoad = gridLoadChart()
 renewableInc = renewableIncrease()
 
 # cpacity vs actual
-capacityVsActual = renewable_share_by_operator()
+renewByOp = renewable_share_by_operator()
 
 edaLayout = html.Div(children=[
                         html.Div(children=[
@@ -302,7 +312,7 @@ edaLayout = html.Div(children=[
                                 dcc.Graph(id='load-diff', figure=gridLoad)
                                 ], style={'width': '50%', 'height': '100%'}),
                             html.Div(children=[
-                                dcc.Graph(id='capacity-vs-actual', figure=capacityVsActual)
+                                dcc.Graph(id='capacity-vs-actual', figure=renewByOp)
                                 ], style={'width': '50%', 'height': '150%'})
                             ], style={'display': 'flex'}),
                         
