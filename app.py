@@ -11,6 +11,7 @@ from layout.template import titles_styles
 app = Dash(__name__)
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = Dash(__name__, external_stylesheets=external_stylesheets)
+app.title = 'German Energy Infrastructure'
 server = app.server
 
 app.layout = html.Div([
