@@ -286,16 +286,74 @@ def renewable_share_by_operator():
     fig.update_yaxes(range=[0, .6])
     
     # add annotiation to give information about black being solar and grey being wind
-    fig.add_annotation(x=2015, y=0.14,
+    fig.add_annotation(x=2020, y=0.05,
                 text="Solar",
                 showarrow=False,
-                textangle=270)
-    fig.add_annotation(x=2015, y=0.485,
+                textangle=0,
+                xref="x4",
+                xshift=25)
+    fig.add_annotation(x=2020, y=0.16,
                 text="Wind",
                 showarrow=False,
-                textangle=270)
+                textangle=0,
+                xref="x4",
+                xshift=25)
 
 
+    return fig
+
+
+def correlationAnalysis():
+    fig = go.Figure()
+    
+    fig.update_layout(
+        title='Correlation: Renweables & Load Difference',
+        template=my_ibcs_template,
+        yaxis=dict(
+            tickformat=',.0f',
+            tickmode='array',
+            showgrid=False,
+            zeroline=False
+        ),
+        xaxis=dict(
+            tickformat=',.0f',
+            tickmode='array',
+            showticklabels=False,
+            showgrid=False,
+            zeroline=False
+        ),
+    )
+    
+    # calculate the sum of solar and wind generation for each month
+    monthly_data['total_renewable_generation'] = monthly_data['DE_solar_generation_actual'] + monthly_data['DE_wind_generation_actual']
+    
+    # calculate the correlation between the total renewable generation and the load difference
+    correlation = monthly_data[['total_renewable_generation', 'load_diff']].corr()
+    
+    # create scatter plot to show the correlation
+    fig.add_trace(go.Scatter(x=monthly_data['total_renewable_generation'], y=monthly_data['load_diff'], mode='markers', name='Correlation'))
+    
+    # calculate the slope and intercept of the trendline
+    slope, intercept = np.polyfit(monthly_data['total_renewable_generation'], monthly_data['load_diff'], 1)
+
+    # add trendline to the scatter plot
+    fig.add_trace(go.Scatter(x=monthly_data['total_renewable_generation'], y=monthly_data['total_renewable_generation']*slope + intercept, mode='lines', name='Trendline'))
+    
+    
+    # add annotation to show the correlation value
+    fig.add_annotation(x=10000000, y=5000000,
+                text="Correlation: {:.2f}".format(correlation['load_diff']['total_renewable_generation']),
+                showarrow=False,
+                textangle=0,
+                xref="x",
+                yref="y",
+                xshift=-10)
+    
+    # hide x and y axis
+    fig.update_xaxes(showticklabels=False)
+    fig.update_yaxes(showticklabels=False)
+    
+    
     return fig
 
 
@@ -308,8 +366,11 @@ gridLoad = gridLoadChart()
 # renewable increase
 renewableInc = renewableIncrease()
 
-# cpacity vs actual
+# renewable share by operator
 renewByOp = renewable_share_by_operator()
+
+# correlation analysis
+corrAn = correlationAnalysis()
 
 edaLayout = html.Div(children=[
                         html.Div(children=[
@@ -323,8 +384,11 @@ edaLayout = html.Div(children=[
                             ], style={'display': 'flex'}),
                         
                         html.Div(children=[
-                            dcc.Graph(id='renewable-increase', figure=renewableInc)
-                            ], style={'width': '50%', 'height': '100%', 'align' : 'left'}),
-                            ],
+                                html.Div(children=[
+                                dcc.Graph(id='renewable-increase', figure=renewableInc)
+                                ], style={'width': '50%', 'height': '100%', 'align' : 'left'}),
+                                dcc.Graph(id='correlation-analysis', figure=corrAn)
+                            ], style={'display': 'flex'})
+                        ]
     )
 
