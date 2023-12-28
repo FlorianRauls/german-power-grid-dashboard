@@ -322,6 +322,8 @@ def correlationAnalysis():
             showgrid=False,
             zeroline=False
         ),
+        xaxis_title="Renewable Generation",
+        yaxis_title="Load Difference"
     )
     
     # calculate the sum of solar and wind generation for each month
