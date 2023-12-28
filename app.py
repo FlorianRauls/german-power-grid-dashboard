@@ -16,9 +16,9 @@ server = app.server
 app.layout = html.Div([
     html.H3(children='Florian Rauls', style=titles_styles),
     html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
-    html.H3(children='2015-2020', style=titles_styles),
+    html.H3(children='2023', style=titles_styles),
     dcc.Tabs(id="tabs-example-graph", value='data-exploration', children=[
-        dcc.Tab(label='Data Exploration', value='data-exploration'),
+        dcc.Tab(label='Data Exploration (2015-2020)', value='data-exploration'),
         dcc.Tab(label='Geo Map', value='geo-map'),
         dcc.Tab(label='NLP', value='ml')
     ]),
