@@ -13,27 +13,33 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
-# Define the app layout
 app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content')
+    html.H3(children='Florian Rauls', style=titles_styles),
+    html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
+    html.H3(children='2015-2020', style=titles_styles),
+    dcc.Tabs(id="tabs-example-graph", value='data-exploration', children=[
+        dcc.Tab(label='Data Exploration', value='data-exploration'),
+        dcc.Tab(label='Geo Map', value='geo-map'),
+        dcc.Tab(label='NLP', value='ml')
+    ]),
+    html.Div(id='tabs-content-example-graph')
 ])
 
-# Callback to update page content
-@app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
-def display_page(pathname):
-    if pathname == '/':
+@app.callback(Output('tabs-content-example-graph', 'children'),
+              Input('tabs-example-graph', 'value'))
+def render_content(tab):
+    if tab == 'data-exploration':
         return html.Div([
-                html.H3(children='Florian Rauls', style=titles_styles),
-                html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
-                html.H3(children='2015-2020', style=titles_styles),
-                edaLayout
+                    edaLayout
         ])
-    else:
-        return '404 - Page not found'  # You can have a default page or a 404 page
-
-
+    elif tab == 'geo-map':
+        return html.Div([
+            html.H3('Geo Map TBD'),
+        ])
+    elif tab == 'ml':
+        return html.Div([
+            html.H3('NLP TBD'),
+        ])
 
 # Run the app
 if __name__ == '__main__':
