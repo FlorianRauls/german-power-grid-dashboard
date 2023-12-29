@@ -6,6 +6,7 @@ import os
 from dash.dependencies import Input, Output
 from layout.eda import edaLayout
 from layout.template import titles_styles
+from layout.ml import ml_layout
 
 # Initialize the Dash app
 app = Dash(__name__)
@@ -21,7 +22,7 @@ app.layout = html.Div([
     dcc.Tabs(id="tabs-example-graph", value='data-exploration', children=[
         dcc.Tab(label='Data Exploration (2015-2020)', value='data-exploration'),
         dcc.Tab(label='Geo Map', value='geo-map'),
-        dcc.Tab(label='NLP', value='ml')
+        dcc.Tab(label='Hourly Load Forecasting', value='ml')
     ]),
     html.Div(id='tabs-content-example-graph')
 ])
@@ -39,7 +40,7 @@ def render_content(tab):
         ])
     elif tab == 'ml':
         return html.Div([
-            html.H3('NLP TBD'),
+            ml_layout,
         ])
 
 # Run the app
