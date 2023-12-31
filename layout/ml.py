@@ -11,6 +11,7 @@ from .template import my_ibcs_template, titles_styles
 from plotly.subplots import make_subplots
 from dash.dependencies import Input, Output
 
+# importing the datsaet
 path = os.path.join('data', 'results.csv')
 data = pd.read_csv(path)
 
@@ -68,7 +69,7 @@ fig.update_layout(
 )
 
 start_date = "2019-01-02"
-end_date = "2019-01-08"
+end_date = "2019-01-10"
 fig.update_xaxes(range=[start_date, end_date])
 
 ml_layout = html.Div(
