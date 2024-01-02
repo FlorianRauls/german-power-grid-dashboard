@@ -15,6 +15,10 @@ app = Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'German Energy Infrastructure'
 server = app.server
 
+# preload static layouts
+edaLayout_preload = edaLayout
+ml_layout_preload = ml_layout
+
 app.layout = html.Div([
     html.H3(children='Florian Rauls', style=titles_styles),
     html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
@@ -32,7 +36,7 @@ app.layout = html.Div([
 def render_content(tab):
     if tab == 'data-exploration':
         return html.Div([
-                    edaLayout
+                    edaLayout_preload
         ])
     elif tab == 'geo-map':
         return html.Div([
@@ -40,7 +44,7 @@ def render_content(tab):
         ])
     elif tab == 'ml':
         return html.Div([
-            ml_layout,
+            ml_layout_preload
         ])
 
 # Run the app

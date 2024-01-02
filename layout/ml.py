@@ -11,9 +11,25 @@ from .template import my_ibcs_template, titles_styles
 from plotly.subplots import make_subplots
 from dash.dependencies import Input, Output
 
-# importing the datsaet
-path = os.path.join('data', 'results.csv')
-data = pd.read_csv(path)
+
+# importing the dataset
+path = os.path.join('data', 'results.sqlite')
+conn = sqlite3.connect(path)
+
+# Execute the first SQL statement to fetch every 2nd row from the database
+query1 = """
+SELECT
+    *
+FROM
+    results
+WHERE
+    rowid % 2 = 0
+"""
+
+data = pd.read_sql_query(query1, conn)
+
+# Close the connection
+conn.close()
 
 
 def calculate_MSE(actual, prediction):

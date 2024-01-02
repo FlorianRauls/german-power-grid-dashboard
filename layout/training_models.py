@@ -159,7 +159,8 @@ if __name__ == "__main__":
     test_X = after2019[["lag_1_hour", "month", "day", "hour"]]
     results["perceptronMoreDims"] = train_MultiLayerPerceptronMoreDimensions(train_X, train_y, test_X, test_y)
     
-    
-    # save results to csv file
-    results.to_csv(os.path.join("data", "results.csv"), index=False)
+    # save results to sqlite database
+    conn = sqlite3.connect(os.path.join("data", "results.sqlite"))
+    results.to_sql("results", conn, if_exists="replace", index=False)
+    conn.close()
     
