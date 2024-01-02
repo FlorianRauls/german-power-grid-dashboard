@@ -31,6 +31,7 @@ mse_linReg = calculate_MSE(data['actual'], data['linReg'])
 mse_rf = calculate_MSE(data['actual'], data['rf'])
 mse_gb = calculate_MSE(data['actual'], data['gb'])
 mse_perceptron = calculate_MSE(data['actual'], data['perceptron'])
+mse_perceptron_more_dims = calculate_MSE(data['actual'], data['perceptronMoreDims'])
 
 # bring mse into a more readable format (GWh)
 mse_entsoe = str(round(mse_entsoe/1000000, 1)) + " TWh"
@@ -38,18 +39,20 @@ mse_linReg = str(round(mse_linReg/1000000, 1)) + " TWh"
 mse_rf = str(round(mse_rf/1000000, 1)) + " TWh"
 mse_gb = str(round(mse_gb/1000000, 1)) + " TWh"
 mse_perceptron = str(round(mse_perceptron/1000000, 1)) + " TWh"
+mse_perceptron_more_dims = str(round(mse_perceptron_more_dims/1000000, 1)) + " TWh"
+
 
 
 
 # create subplots
-titles = ["Ensoe Forecast (MSE: " + str(mse_entsoe) + ")", "Linear Regression (MSE: " + str(mse_linReg) + ")", "Random Forest Regression (MSE: " + str(mse_rf) + ")", "Gradient Boost (MSE: " + str(mse_gb) + ")", "Perceptron (MSE: " + str(mse_perceptron) + ")"]
+titles = ["Ensoe Forecast (MSE: " + str(mse_entsoe) + ")", "Linear Regression (MSE: " + str(mse_linReg) + ")", "Random Forest Regression (MSE: " + str(mse_rf) + ")", "Gradient Boost (MSE: " + str(mse_gb) + ")", "Perceptron (MSE: " + str(mse_perceptron) + ")", "Perceptron with more dimensions (MSE: " + str(mse_perceptron_more_dims) + ")"]
 fig = make_subplots(rows=2, cols=3, shared_xaxes=True, vertical_spacing=0.02, subplot_titles=titles)
 
 
 # add the actual load to the subplots
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['actual'], name='Actual Load'), row=1, col=1)
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['actual'], name='Actual Load'), row=1, col=2)
-# fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['actual'], name='Actual Load'), row=1, col=3)
+fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['actual'], name='Actual Load'), row=1, col=3)
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['actual'], name='Actual Load'), row=2, col=1)
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['actual'], name='Actual Load'), row=2, col=2)
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['actual'], name='Actual Load'), row=2, col=3)
@@ -60,7 +63,7 @@ fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['linReg'], name='Linear
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['rf'], name='Random Forest'), row=2, col=3)
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['gb'], name='Gradient Boosting'), row=2, col=1)
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['perceptron'], name='perceptron'), row=2, col=2)
-
+fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['perceptronMoreDims'], name='perceptron with more dimensions'), row=1, col=3)
 
 # edit the layout
 fig.update_layout(

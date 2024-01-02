@@ -87,10 +87,10 @@ def train_MultiLayerPerceptron(trainX, trainY, testX, testY):
         nn.Linear(100, 1)
     )
     criterion = nn.MSELoss()
-    optimizer = t.optim.Adam(model.parameters(), lr=0.25)
+    optimizer = t.optim.Adam(model.parameters(), lr=0.15)
     trainX = t.Tensor(trainX.values.reshape(-1, 1))
     trainY = t.Tensor(trainY.values.reshape(-1, 1))
-    for epoch in range(50):
+    for epoch in range(100):
         optimizer.zero_grad()
         outputs = model(trainX)
         loss = criterion(outputs, trainY)
@@ -98,6 +98,35 @@ def train_MultiLayerPerceptron(trainX, trainY, testX, testY):
         optimizer.step()
         print('epoch {}, loss {}'.format(epoch, loss.item()))
     testX = t.Tensor(testX.values.reshape(-1, 1))
+    predictions = model(testX).detach().numpy()
+    return predictions
+
+
+def train_MultiLayerPerceptronMoreDimensions(trainX, trainY, testX, testY):
+    """
+    Train a multi layer perceptron model on the given data for hourly load prediction.
+    """
+    model = nn.Sequential(
+        nn.Linear(4, 35),
+        nn.ReLU(),
+        nn.Linear(35, 35),
+        nn.ReLU(),
+        nn.Linear(35, 35),
+        nn.ReLU(),
+        nn.Linear(35, 1)
+    )
+    criterion = nn.MSELoss()
+    optimizer = t.optim.Adam(model.parameters(), lr=0.1)
+    trainX = t.Tensor(trainX.values)
+    trainY = t.Tensor(trainY.values.reshape(-1, 1))
+    for epoch in range(200):
+        optimizer.zero_grad()
+        outputs = model(trainX)
+        loss = criterion(outputs, trainY)
+        loss.backward()
+        optimizer.step()
+        print('epoch {}, loss {}'.format(epoch, loss.item()))
+    testX = t.Tensor(testX.values)
     predictions = model(testX).detach().numpy()
     return predictions
 
@@ -124,6 +153,11 @@ if __name__ == "__main__":
     results["rf"] = train_randomForest(train_X, train_y, test_X, test_y)
     results["gb"] = train_gradientBoosting(train_X, train_y, test_X, test_y)
     results["perceptron"] = train_MultiLayerPerceptron(train_X, train_y, test_X, test_y)
+    
+    # also train with more dimensions
+    train_X = train[["lag_1_hour", "month", "day", "hour"]]
+    test_X = after2019[["lag_1_hour", "month", "day", "hour"]]
+    results["perceptronMoreDims"] = train_MultiLayerPerceptronMoreDimensions(train_X, train_y, test_X, test_y)
     
     
     # save results to csv file
