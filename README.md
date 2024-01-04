@@ -13,3 +13,5 @@ Open Power System Data. 2020. Data Package Time series. Version 2020-10-06. http
 (https://data.open-power-system-data.org/time_series/)
 
 Manske, D., & Schmiedt, J. (2023). Geo-locations and System Data of Renewable Energy Installations in Germany (Version V20230420) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.8188601 (https://zenodo.org/records/8188601)
+
+https://github.com/leakyMirror/map-of-europe/blob/master/GeoJSON/europe.geojson
