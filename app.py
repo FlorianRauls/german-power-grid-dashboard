@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output
 from layout.eda import edaLayout
 from layout.template import titles_styles
 from layout.ml import ml_layout
+from layout.geomap import geomap_layout
 
 # Initialize the Dash app
 app = Dash(__name__)
@@ -18,6 +19,7 @@ server = app.server
 # preload static layouts
 edaLayout_preload = edaLayout
 ml_layout_preload = ml_layout
+geomap_layout_preload = geomap_layout
 
 app.layout = html.Div([
     html.H3(children='Florian Rauls', style=titles_styles),
@@ -28,8 +30,8 @@ app.layout = html.Div([
         dcc.Tab(label='Geo Map', value='geo-map'),
         dcc.Tab(label='Hourly Load Forecasting', value='ml')
     ]),
-    html.Div(id='tabs-content-example-graph')
-])
+    html.Div(id='tabs-content-example-graph', style={"height": "100%", "overflow": "auto"})
+], style={"display": "flex", "flex-direction": "column", "height": "100vh"})
 
 @app.callback(Output('tabs-content-example-graph', 'children'),
               Input('tabs-example-graph', 'value'))
@@ -40,7 +42,7 @@ def render_content(tab):
         ])
     elif tab == 'geo-map':
         return html.Div([
-            html.H3('Geo Map TBD'),
+            geomap_layout_preload
         ])
     elif tab == 'ml':
         return html.Div([

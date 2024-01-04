@@ -84,7 +84,9 @@ fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['perceptronMoreDims'], 
 # edit the layout
 fig.update_layout(
     title='Actual Load vs. Forecasting Models',
-    template=my_ibcs_template
+    template=my_ibcs_template,
+    autosize=True,
+    height=800,
 )
 
 start_date = "2019-01-02"
