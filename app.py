@@ -24,11 +24,11 @@ geomap_layout_preload = geomap_layout
 app.layout = html.Div([
     html.H3(children='Florian Rauls', style=titles_styles),
     html.H3(children='Exploration of German Energy Infrastructure', style=titles_styles),
-    html.H3(children='2023', style=titles_styles),
+    html.H3(children='2015-2023', style=titles_styles),
     dcc.Tabs(id="tabs-example-graph", value='data-exploration', children=[
         dcc.Tab(label='Data Exploration (2015-2020)', value='data-exploration'),
-        dcc.Tab(label='Geo Map', value='geo-map'),
-        dcc.Tab(label='Hourly Load Forecasting', value='ml')
+        dcc.Tab(label='Renewable Energy Locations (2021)', value='geo-map'),
+        dcc.Tab(label='Hourly Load Forecasting (2019-2023)', value='ml')
     ]),
     html.Div(id='tabs-content-example-graph', style={"height": "100%", "overflow": "auto"})
 ], style={"display": "flex", "flex-direction": "column", "height": "100vh"})

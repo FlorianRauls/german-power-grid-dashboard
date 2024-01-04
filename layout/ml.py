@@ -57,12 +57,8 @@ mse_gb = str(round(mse_gb/1000000, 1)) + " TWh"
 mse_perceptron = str(round(mse_perceptron/1000000, 1)) + " TWh"
 mse_perceptron_more_dims = str(round(mse_perceptron_more_dims/1000000, 1)) + " TWh"
 
-
-
-
-# create subplots
-titles = ["Ensoe Forecast (MSE: " + str(mse_entsoe) + ")", "Linear Regression (MSE: " + str(mse_linReg) + ")", "Random Forest Regression (MSE: " + str(mse_rf) + ")", "Gradient Boost (MSE: " + str(mse_gb) + ")", "Perceptron (MSE: " + str(mse_perceptron) + ")", "Perceptron with more dimensions (MSE: " + str(mse_perceptron_more_dims) + ")"]
-fig = make_subplots(rows=2, cols=3, shared_xaxes=True, vertical_spacing=0.02, subplot_titles=titles)
+fig = make_subplots(rows=2, cols=3, shared_xaxes=True, vertical_spacing=0.02, subplot_titles = ["Entsoe Forecast " + str(mse_entsoe), "Linear Regression " + str(mse_linReg), "Perceptron with more dimensions " + str(mse_perceptron_more_dims) , "Gradient Boosting " + str(mse_gb), "Perceptron " + str(mse_perceptron), "Random Forest " + str(mse_rf)]
+)
 
 
 # add the actual load to the subplots
@@ -80,6 +76,8 @@ fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['rf'], name='Random For
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['gb'], name='Gradient Boosting'), row=2, col=1)
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['perceptron'], name='perceptron'), row=2, col=2)
 fig.add_trace(go.Scatter(x=data['utc_timestamp'], y=data['perceptronMoreDims'], name='perceptron with more dimensions'), row=1, col=3)
+
+
 
 # edit the layout
 fig.update_layout(
