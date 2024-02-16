@@ -2,6 +2,13 @@
 ## Overview
 This repository is a work in progress to create an International Business Communications Conform (https://www.ibcs.com/de/) conform dashboard giving an overview of German Energy Generation.
 
+![Page 1](presentation/showcase1.PNG)
+
+![Page 2](presentation/showcase2.PNG)
+
+![Page 3](presentation/showcase3.PNG)
+
+
 ## Features
 N/A
 
